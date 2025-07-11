@@ -103,5 +103,5 @@ AutoBrowserBoom/
 
 ![photo_2025711121445](https://raw.githubusercontent.com/gh0stNinja/images/main/photo_2025711121445.gif)
 
-![photo_2025711145110](C:/File/Tools/%E5%AF%86%E7%A0%81%E7%88%86%E7%A0%B4/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8F%E8%A7%88%E5%99%A8%E7%88%86%E7%A0%B4%E5%AF%86%E7%A0%81/photo_2025711145110.gif)
+![photo_2025711145110.gif](https://raw.githubusercontent.com/gh0stNinja/images/main/photo_2025711145110.gif)
 
