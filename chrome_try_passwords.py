@@ -242,10 +242,11 @@ xpath_png = None
 # 验证码输入框
 xpath_input_code = None
 
-url = "xxxx"
+url = "http://39.162.0.43:28819/login"
 
 username_file = "username.txt"
 password_file = "password.txt"
+# password_file = "password_top10.txt"
 
 if __name__ == "__main__":
     # 打开网站
