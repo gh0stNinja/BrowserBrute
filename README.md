@@ -20,7 +20,7 @@
 ```
 AutoBrowserBoom/
  │
- ├── boom.py           # 主程序（你的这份脚本）
+ ├── boom.py           # 主程序
  ├── auth_key.json     # 存放 OCR API 授权 key
  ├── username.txt      # 用户名字典
  ├── password.txt      # 密码字典
@@ -74,7 +74,7 @@ AutoBrowserBoom/
 3. 执行：
 
    ```
-   python chrome_try_passwords.py
+   python boom.py
    ```
 
 ------
